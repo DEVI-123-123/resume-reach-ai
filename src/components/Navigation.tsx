@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { 
   Users, 
@@ -8,7 +9,8 @@ import {
   Menu, 
   X,
   User,
-  Briefcase
+  Briefcase,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +21,7 @@ interface NavigationProps {
 
 export const Navigation = ({ currentModule, onModuleChange }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { signOut, profile } = useAuth();
 
   const modules = [
     { id: "candidate", icon: User, label: "Candidate Hub", color: "text-primary" },
@@ -64,6 +67,21 @@ export const Navigation = ({ currentModule, onModuleChange }: NavigationProps) =
                 </Button>
               );
             })}
+            
+            {/* User Menu */}
+            <div className="flex items-center space-x-2 ml-4 pl-4 border-l border-border">
+              <span className="text-sm text-muted-foreground">
+                {profile?.full_name || 'User'}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={signOut}
+                className="text-muted-foreground hover:text-destructive"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
 
           {/* Mobile menu button */}
